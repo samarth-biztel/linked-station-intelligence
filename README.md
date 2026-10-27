@@ -21,4 +21,18 @@ Set `FIXTURE_PATH` if the workbook is outside the repository root. The fixture's
 
 The phase 1 gate expects 3,090 tightening cycles, 3,000 leak cycles, 3,000 engines, 90 successful retries, 720 leak failures, and 2,280 leak passes. `verify:phase1` checks those counts in PostgreSQL.
 
-Later phases will add automatic mapping, context and link validation, staging and quarantine, generated linked views, findings, and the API and frontend.
+## Phase 2
+
+The registered [operation context](config/operations.yaml) fixes operation IDs, link direction, and each source time zone. A changed context gets a new version; a missing or invalid one stops mapping. The workbook profiler selects station sheets by operation number and lists populated untitled columns.
+
+```powershell
+npm run db:migrate
+npm run map:fixture
+npm run verify:phase2
+```
+
+`map:fixture` sends sheet headers and five sample rows to a hosted proposer when `LLM_MAPPING_URL` and `LLM_MODEL` are set. The URL must accept a Chat Completions-compatible request and return a JSON object in the first message. The model can retry twice after a rejected proposal. Without a configured endpoint, the command uses [fixture mappings](config/fixture-mappings.json) as the plan's fallback. Both paths go through the same Zod schema and full-file validation before a mapping is applied. The fallback exercises mapping validation; it does not test model quality.
+
+The phase 2 gate checks that both mappings cover every station row, the stray values in O8 and P8 are flagged, and a wrong result-column proposal is rejected. Mapping proposals and validation reports are stored in PostgreSQL. Re-running the same context and mapping keeps their versions unchanged.
+
+Later phases will add staged ingestion and quarantine, link evidence, generated linked views, findings, and the API and frontend.

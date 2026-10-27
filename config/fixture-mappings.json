@@ -1,0 +1,45 @@
+{
+  "10": {
+    "operation_id": "10",
+    "name": "Top Cover Tightening",
+    "operation_check": { "column": "Operation Number", "must_equal": 10 },
+    "sheet": "Tightening Station",
+    "engine_key": "Engine No",
+    "attempt": "Attempt",
+    "resource": "Machine ID",
+    "entered_at": "Station Entry Time",
+    "started_at": "Cycle Start Time",
+    "ended_at": "Cycle End Time",
+    "timezone": "Asia/Kolkata",
+    "result": { "column": "Torque Station Result", "ok": ["OK"], "nok": ["NOK"] },
+    "measurements": [
+      { "column": "Bolt 1 Torque (Nm)", "parameter": "bolt1_torque", "unit": "Nm", "lower_col": "Torque Lower Limit (Nm)", "upper_col": "Torque Upper Limit (Nm)" },
+      { "column": "Bolt 2 Torque (Nm)", "parameter": "bolt2_torque", "unit": "Nm", "lower_col": "Torque Lower Limit (Nm)", "upper_col": "Torque Upper Limit (Nm)" }
+    ],
+    "derived": [
+      { "parameter": "torque_diff", "unit": "Nm", "expr": "abs(bolt1_torque - bolt2_torque)" },
+      { "parameter": "entry_delay_s", "unit": "s", "expr": "seconds(started_at - entered_at)" }
+    ],
+    "checks": [{ "column": "Cycle Duration (sec)", "equals": "seconds(ended_at - started_at)" }],
+    "ignore": ["Station", "Unnamed:14", "Unnamed:15"]
+  },
+  "20": {
+    "operation_id": "20",
+    "name": "Leak Testing",
+    "operation_check": { "column": "Operation Number", "must_equal": 20 },
+    "sheet": "Leak Testing Station",
+    "engine_key": "Engine No",
+    "resource": "Machine ID",
+    "entered_at": "Station Entry Time",
+    "started_at": "Cycle Start Time",
+    "ended_at": "Cycle End Time",
+    "timezone": "Asia/Kolkata",
+    "result": { "column": "Leak Test Result", "ok": ["OK"], "nok": ["NOK"] },
+    "measurements": [
+      { "column": "Leak Rate (sccm)", "parameter": "leak_rate", "unit": "sccm", "upper_col": "Leak Threshold (sccm)" }
+    ],
+    "derived": [],
+    "checks": [{ "column": "Leak Test Timestamp", "equals": "ended_at" }],
+    "ignore": ["Station"]
+  }
+}

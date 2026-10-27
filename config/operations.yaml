@@ -1,0 +1,12 @@
+line_id: line-1
+operations:
+  - id: "10"
+    name: Top Cover Tightening
+    timezone: Asia/Kolkata
+    upstream: []
+    downstream: ["20"]
+  - id: "20"
+    name: Leak Testing
+    timezone: Asia/Kolkata
+    upstream: ["10"]
+    downstream: []

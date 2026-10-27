@@ -11,15 +11,20 @@
     "db:migrate": "npm run build && node dist/backend/src/cli/migrate.js",
     "load:fixture": "npm run build && node dist/backend/src/cli/manualLoad.js",
     "verify:phase1": "npm run build && node dist/backend/src/cli/verifyPhase1.js",
+    "map:fixture": "npm run build && node dist/backend/src/cli/mapFixture.js",
+    "verify:phase2": "npm run build && node dist/backend/src/cli/verifyPhase2.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "exceljs": "4.4.0",
-    "pg": "^8.23.1"
+    "pg": "^8.23.1",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/pg": "^8.11.0",
+    "node-pg-migrate": "^9.0.0",
     "typescript": "^5.9.0"
   }
 }

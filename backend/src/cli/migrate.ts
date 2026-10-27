@@ -1,20 +1,12 @@
-import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { createClient } from '../db.js';
+import { runner } from 'node-pg-migrate';
+import { databaseUrl } from '../db.js';
 
-const migrationPath = path.resolve('backend/migrations/001_core.sql');
-const client = createClient();
+const applied = await runner({
+  databaseUrl: databaseUrl(),
+  dir: path.resolve('backend/migrations'),
+  direction: 'up',
+  migrationsTable: 'schema_migration',
+});
 
-try {
-  await client.connect();
-  const sql = await readFile(migrationPath, 'utf8');
-  await client.query('BEGIN');
-  await client.query(sql);
-  await client.query('COMMIT');
-  console.log('Applied phase 1 core schema.');
-} catch (error) {
-  await client.query('ROLLBACK').catch(() => undefined);
-  throw error;
-} finally {
-  await client.end();
-}
+console.log(`Applied ${applied.length} pending migration(s).`);
