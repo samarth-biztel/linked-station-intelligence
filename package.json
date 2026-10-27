@@ -1,0 +1,25 @@
+{
+  "name": "linked-station-intelligence",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22 <27"
+  },
+  "scripts": {
+    "build": "tsc",
+    "db:migrate": "npm run build && node dist/backend/src/cli/migrate.js",
+    "load:fixture": "npm run build && node dist/backend/src/cli/manualLoad.js",
+    "verify:phase1": "npm run build && node dist/backend/src/cli/verifyPhase1.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.0",
+    "typescript": "^5.9.0"
+  }
+}
